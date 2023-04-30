@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<style>
+    ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  margin: 0 auto;
+}
+
+li {
+  line-height: 1.5;
+  text-indent: -30px;
+  padding: 8px 0 8px 30px;
+  border: 2px solid #ddd;
+  margin: 10px auto;
+}
+
+li:before {
+  float: left;
+  display: block;
+  content: '\2705';
+  color: #ffd900;
+  margin: 0 30px 0 0;
+}
+
+li:hover{
+    background-color: #ddd;
+}
+
+a {
+    text-decoration: none;
+    color: rgb(61, 6, 6);
+    font: 1.5em sans-serif;
+    text-align: center;
+}
+
+</style>
+<body>
+    <div class="container">
+        <h1>3950</h1>
+
+        <h2 style="text-align: center;">Matches</h2>
+        <ul id="listOfMatches">
+            
+        </ul>
+    </div>
+
+
+    <a href="Analytics.html" style="text-decoration: underline;">Analytics</a>
+
+
+    <script>
+
+        const listToAdd = document.getElementById('listOfMatches');
+
+        async function fetchData() {
+            const url =   'https://www.thebluealliance.com/api/v3/team/frc3950/event/2023nytr/matches/simple';
+        
+        try {
+            const response = await fetch(url, {
+            headers: {
+                'X-TBA-Auth-Key' : 'lgZJsyPRLjO4ttTE4n8HNNEfdHEWMyFUVtUYZpW9RgzAbJ5MOKS82gyjwmBhHzIa'	
+            }
+            });
+            if (!response.ok) {
+            throw new Error('Network response was not ok.');
+            }
+            const data = await response.json();
+            // Process the data as needed
+            console.log(data);
+            let teamList = [];
+
+        data.forEach(element => {
+            let teamNumber = element.match_number;
+            if(element.comp_level == "qm"){
+                teamList.push(teamNumber);
+            }
+           
+            
+            
+        });
+        teamList.sort((a, b) => a - b);
+        teamList.forEach(element => {
+            listToAdd.innerHTML += `    
+                <li><a href="${element}.html">${element}</a></li>`;
+        });
+
+
+        } catch (error) {
+            console.error('There was a problem fetching the data:', error);
+        }
+        }
+
+        fetchData();
+
+    </script>
+</body>
+</html>
